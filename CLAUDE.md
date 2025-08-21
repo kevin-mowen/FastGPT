@@ -54,6 +54,7 @@ This is a monorepo using pnpm workspaces with the following key structure:
 - `cd projects/mcp_server && bun dev` - Start with Bun in watch mode
 - `cd projects/mcp_server && bun build` - Build MCP server
 - `cd projects/mcp_server && bun start` - Start MCP server
+- `cd projects/mcp_server && bun run mcp_test` - Test MCP server with inspector
 
 ### Utility Commands
 - `pnpm create:i18n` - Generate i18n translation files
@@ -64,10 +65,14 @@ This is a monorepo using pnpm workspaces with the following key structure:
 ## Testing
 
 The project uses Vitest for testing with coverage reporting. Key test commands:
-- `pnpm test` - Run all tests
+- `pnpm test` - Run all tests with coverage reporting
 - `pnpm test:workflow` - Run workflow tests specifically  
-- Test files are located in `test/` directory and `projects/app/test/`
+- `pnpm vitest run --reporter=verbose test/cases/specific/test.test.ts` - Run a single test file
+- `cd projects/sandbox && pnpm test` - Run NestJS/Jest tests for sandbox service
+- `cd projects/mcp_server && bun run mcp_test` - Test MCP server with inspector
+- Test files are located in `test/cases/` directory and `projects/app/test/`
 - Coverage reports are generated in `coverage/` directory
+- Tests include component tests, API endpoint tests, workflow dispatch tests, and utility function tests
 
 ## Code Organization Patterns
 
@@ -96,10 +101,12 @@ The project uses Vitest for testing with coverage reporting. Key test commands:
 ## Development Notes
 
 - **Package Manager**: Uses pnpm with workspace configuration
-- **Node Version**: Requires Node.js >=18.16.0, pnpm >=9.0.0
+- **Node Version**: Requires Node.js >=18.16.0, pnpm >=9.0.0  
 - **Database**: Supports MongoDB, PostgreSQL with pgvector, or Milvus for vector storage
 - **AI Integration**: Supports multiple AI providers through unified interface
 - **Internationalization**: Full i18n support for Chinese, English, and Japanese
+- **Code Quality**: Pre-commit hooks with Husky run linting and formatting automatically
+- **Runtime**: Main app uses NextJS, sandbox uses NestJS, MCP server uses Bun
 
 ## Key File Patterns
 

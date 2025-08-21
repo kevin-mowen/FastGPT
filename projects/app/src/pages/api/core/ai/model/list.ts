@@ -34,6 +34,10 @@ async function handler(
   await authSystemAdmin({ req });
 
   // Read db
+  if (!global.systemModelList) {
+    return [];
+  }
+
   return global.systemModelList.map((model) => ({
     type: model.type,
     provider: model.provider,

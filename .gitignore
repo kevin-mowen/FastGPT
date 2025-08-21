@@ -38,3 +38,12 @@ files/helm/fastgpt/charts/*.tgz
 tmp/
 coverage
 document/.source
+deploy/docker/fastgpt-minio/
+deploy/docker/mongo/*
+
+deploy/docker/redis/data/*
+
+# Local configuration files (should not be committed)
+projects/app/data/config.local.json
+deploy/docker/.env
+.env.local
