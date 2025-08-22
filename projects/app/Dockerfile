@@ -8,9 +8,9 @@ RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /
 RUN apk add --no-cache libc6-compat && npm install -g pnpm@9.4.0
 
 # copy packages and one project
-COPY pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
-COPY ./packages ./packages
-COPY ./projects/app/package.json ./projects/app/package.json
+COPY ../../pnpm-lock.yaml ../../pnpm-workspace.yaml ../../.npmrc ./
+COPY ../../packages ./packages
+COPY ./package.json ./projects/app/package.json
 
 RUN [ -f pnpm-lock.yaml ] || (echo "Lockfile not found." && exit 1)
 
@@ -29,10 +29,10 @@ ARG proxy
 ARG base_url
 
 # copy common node_modules and one project node_modules
-COPY package.json pnpm-workspace.yaml .npmrc tsconfig.json ./
+COPY ../../package.json ../../pnpm-workspace.yaml ../../.npmrc ../../tsconfig.json ./
 COPY --from=maindeps /app/node_modules ./node_modules
 COPY --from=maindeps /app/packages ./packages
-COPY ./projects/app ./projects/app
+COPY ./ ./projects/app
 COPY --from=maindeps /app/projects/app/node_modules ./projects/app/node_modules
 
 RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
@@ -78,7 +78,7 @@ COPY --from=maindeps /app/node_modules/@zilliz/milvus2-sdk-node ./node_modules/@
 COPY --from=builder /app/projects/app/package.json ./package.json 
 
 # copy config
-COPY ./projects/app/data /app/data
+COPY ./data /app/data
 RUN chown -R nextjs:nodejs /app/data
 
 # Add tmp directory permission control
