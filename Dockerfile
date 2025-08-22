@@ -39,9 +39,15 @@ RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /
 
 RUN apk add --no-cache libc6-compat && npm install -g pnpm@9.4.0
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+# Set build environment variables
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 ENV NEXT_PUBLIC_BASE_URL=$base_url
-RUN pnpm --filter=app build
+ENV NODE_ENV=production
+
+# Build with memory optimization
+RUN pnpm config set store-dir /tmp/pnpm-store && \
+    pnpm --filter=app build && \
+    rm -rf /tmp/pnpm-store
 
 # --------- runner -----------
 FROM node:20.14.0-alpine AS runner
